@@ -27,6 +27,9 @@ class Quiz {
   guess(answer) {
     if (this.getCurrentQuestion().isCorrect(answer)) {
       this.score++;
+      ringTrue();
+    } else {
+      ringFalse();
     }
     this.currentIndex++;
   }
@@ -55,7 +58,7 @@ const questions = [
     "JSON.parse()"
   ),
   new Question(
-    "Quel objet Javascript permet d'arrondir à l'entier le plus proche",
+    "Quel objet Javascript permet d'arrondir à l'entier le plus proche ?",
     ["Math.ceil()", "Math.floor()", "Math.round()", "Math.random()"],
     "Math.round()"
   ),
@@ -67,6 +70,7 @@ const questions = [
 function showQuestion() {
   if (quiz.hasEnded()) {
     showScore();
+    showResult();
   } else {
     const question = quiz.getCurrentQuestion();
     const questionElement = document.getElementById("question");
@@ -91,9 +95,36 @@ function showQuestion() {
   }
 }
 
+// Affichage du score
 function showScore() {
   const scoreH3 = document.getElementById("score");
-  scoreH3.innerHTML = `<h2>Score : ${quiz.score} / ${quiz.questions.length}</h2>`;
+  scoreH3.textContent = `Score : ${quiz.score} / ${quiz.questions.length}`;
+}
+
+// Affichage de la page de résultat
+function showResult() {
+  const quizEndDisplay = document.getElementById("quiz");
+  // Affichage du bouton reload
+  quizEndDisplay.innerHTML = `
+    <h1><span>Quiz </span>Terminé ! </h1>
+    <h3 id="score">Votre score est de ${quiz.score} / ${quiz.questions.length}</h3>
+    <button id="reload" onclick="location.reload()">Recommencer</button>
+       
+   `;
+}
+
+// Sons
+// Son de la mauvaise réponse
+function ringFalse() {
+  const audio = new Audio();
+  audio.src = "./ringFalse.mp3";
+  audio.play();
+}
+// Son de la bonne réponse
+function ringTrue() {
+  const audio = new Audio();
+  audio.src = "./ringTrue.mp3";
+  audio.play();
 }
 
 // 4. Initialisation

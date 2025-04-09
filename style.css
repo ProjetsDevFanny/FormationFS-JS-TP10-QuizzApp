@@ -24,9 +24,14 @@ body h1 span,
 body h1 i {
   color: #ffa502;
 }
+
+body h2 {
+  font-size: 2rem;
+}
 body h3 {
   color: #ffa502;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  margin: 2rem;
 }
 body .container .choices {
   display: flex;
@@ -47,13 +52,30 @@ body .container .choices button {
   user-select: none;
   font-weight: 800;
 }
+
+#reload {
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  margin: 2rem;
+  outline: none;
+  background: #fad393ce;
+  user-select: none;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+
+
 body .container .choices button:hover {
   background: #ffa502;
-  transition: 0.5s;
+  transition: 0.2s;
 }
 body .container .choices button:active {
   transform: scale(0.9);
-  transition: transform 0.1s;
+  /* transition: transform 0.1s; */
 }
 body .container .choices button p {
   font-size: 1.5rem;
