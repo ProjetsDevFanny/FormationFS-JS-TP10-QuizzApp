@@ -6,14 +6,14 @@ class Question {
     this.answer = answer;
   }
 
-  isCorrect(choice) {
+  isCorrect(choice) { // renvoie true ou false
     return choice === this.answer;
   }
 }
 
 class Quiz {
   constructor(questions) {
-    this.questions = questions; // on stocke les questions dans la classe Quiz
+    this.questions = questions; // on stocke le tableau de questions dans la classe Quiz
     this.score = 0; // Le score de l'utilisateur
     this.currentIndex = 0; // L'index de la question courante
   }
@@ -21,6 +21,24 @@ class Quiz {
   //  retourne la question en cours
   getCurrentQuestion() {
     return this.questions[this.currentIndex];
+  }
+
+  // retourne le score
+  getScoreText() {
+    return `Score : ${this.score} / ${this.questions.length}`;
+  }
+  // retrourne l'avancement (1/2 question ...)
+  getProgressText() {
+    return `Question ${this.currentIndex + 1} / ${this.questions.length}`;
+  }
+
+  // Retourne la page de résultat
+  getResult() {
+    return `
+    <h1><span>Quiz </span>Terminé ! </h1>
+    <h3 id="score">Votre score est de ${quiz.score} / ${quiz.questions.length}</h3>
+    <button id="reload" onclick="location.reload()">Recommencer</button>
+   `;
   }
 
   // Prendre la réponse de l’utilisateur, vérifier si elle est correcte, mettre à jour le score si besoin, et passer à la question suivante.
@@ -38,6 +56,64 @@ class Quiz {
   hasEnded() {
     return this.currentIndex >= this.questions.length;
   }
+}
+
+// === Fonctions d'affichage ===
+
+// 3. Fonctions de rendu ou de mise à jour de l’interface (UI)
+function showQuestion() {
+  if (quiz.hasEnded()) {
+    // Ecran de fin
+    showScore();
+    showResult();
+  } else {
+    // Affichage de la question en court
+    const question = quiz.getCurrentQuestion();
+    const questionElement = document.getElementById("question");
+    questionElement.textContent = question.text;
+    showScore();
+
+    // Affichage du numéro de la question
+    const questionNumber = document.getElementById("progress");
+    questionNumber.textContent = quiz.getProgressText();
+
+    // Affichage des choix
+    question.choices.forEach((choice, index) => {
+      const button = document.getElementById("guess" + index);
+      button.textContent = choice;
+      button.onclick = () => {
+        quiz.guess(choice);
+        showQuestion();
+      };
+    });
+  }
+}
+
+// Affichage du score
+function showScore() {
+  const scoreH3 = document.getElementById("score");
+  scoreH3.textContent = quiz.getScoreText();
+}
+
+// Affichage de la page de résultat
+function showResult() {
+  const quizEndDisplay = document.getElementById("quiz");
+  // Affichage du bouton reload
+  quizEndDisplay.innerHTML = quiz.getResult();
+}
+// === Fonctions Sonores ===
+
+// Son de la mauvaise réponse
+function ringFalse() {
+  const audio = new Audio();
+  audio.src = "./ringFalse.mp3";
+  audio.play();
+}
+// Son de la bonne réponse
+function ringTrue() {
+  const audio = new Audio();
+  audio.src = "./ringTrue.mp3";
+  audio.play();
 }
 
 // === Données === // ou import d’un fichier externe avec les données
@@ -64,74 +140,12 @@ const questions = [
   ),
 ];
 
-// === Fonctions d'affichage ===
-
-// 3. Fonctions de rendu ou de mise à jour de l’interface (UI)
-function showQuestion() {
-  if (quiz.hasEnded()) {
-    showScore();
-    showResult();
-  } else {
-    const question = quiz.getCurrentQuestion();
-    const questionElement = document.getElementById("question");
-    questionElement.textContent = question.text;
-    showScore();
-
-    // Affichage du numéro de la question
-    const questionNumber = document.getElementById("progress");
-    questionNumber.textContent = `Question ${quiz.currentIndex + 1} / ${
-      quiz.questions.length
-    }`;
-
-    // Affichage des choix
-    question.choices.forEach((choice, index) => {
-      const button = document.getElementById("choice" + index);
-      button.textContent = choice;
-      button.onclick = () => {
-        quiz.guess(choice);
-        showQuestion();
-      };
-    });
-  }
-}
-
-// Affichage du score
-function showScore() {
-  const scoreH3 = document.getElementById("score");
-  scoreH3.textContent = `Score : ${quiz.score} / ${quiz.questions.length}`;
-}
-
-// Affichage de la page de résultat
-function showResult() {
-  const quizEndDisplay = document.getElementById("quiz");
-  // Affichage du bouton reload
-  quizEndDisplay.innerHTML = `
-    <h1><span>Quiz </span>Terminé ! </h1>
-    <h3 id="score">Votre score est de ${quiz.score} / ${quiz.questions.length}</h3>
-    <button id="reload" onclick="location.reload()">Recommencer</button>
-       
-   `;
-}
-
-// Sons
-// Son de la mauvaise réponse
-function ringFalse() {
-  const audio = new Audio();
-  audio.src = "./ringFalse.mp3";
-  audio.play();
-}
-// Son de la bonne réponse
-function ringTrue() {
-  const audio = new Audio();
-  audio.src = "./ringTrue.mp3";
-  audio.play();
-}
-
 // 4. Initialisation
-const quiz = new Quiz(questions); // Créer l'objet Quiz avec les questions
+const quiz = new Quiz(questions); // On crée l’objet principal quiz à partir du tableau questions.
+// Ensuite on affiche la première question avec : showQuestion();
 
 // 5. Event listeners (si besoin d'autres interactions)
-// Par exemple, si tu veux un bouton "Recommencer"
+// clicks sur autres boutons...
 
 // 6. Lancement du jeu
 showQuestion(); // Afficher la première question

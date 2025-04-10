@@ -51,6 +51,7 @@ body .container .choices button {
   background: #dfe4ea;
   user-select: none;
   font-weight: 800;
+  font-size: 1.6rem;
 }
 
 #reload {
@@ -61,25 +62,30 @@ body .container .choices button {
   border: none;
   margin: 2rem;
   outline: none;
-  background: #fad393ce;
+  background: #dfe4ea;
   user-select: none;
   font-weight: 800;
   font-size: 1.2rem;
 }
 
-
+#reload:hover {
+  background: #ffa502;
+  transition: 0.5s ease;
+}
+#reload:active {
+  transform: scale(0.8);
+  transition: transform 0.1s;
+}
 
 body .container .choices button:hover {
   background: #ffa502;
-  transition: 0.2s;
+  transition: 0.5s ease;
 }
 body .container .choices button:active {
-  transform: scale(0.9);
-  /* transition: transform 0.1s; */
+  transform: scale(0.8);
+  transition: transform 0.3s;
 }
-body .container .choices button p {
-  font-size: 1.5rem;
-}
+
 body #progress {
   font-size: 1.3rem;
   color: #ffa502;
